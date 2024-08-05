@@ -14,7 +14,7 @@ class RoyalFlushRecognitionTest extends TestCase
      * @test
      * @dataProvider royalFlushProvider
      */
-    public function canRecognizeRoyalFLush(array $cards, bool $expectedResult): void
+    public function canRecognizeRoyalFlush(array $cards, bool $expectedResult): void
     {
         $result = Hand::isRecognizedRoyalFlush($cards);
 

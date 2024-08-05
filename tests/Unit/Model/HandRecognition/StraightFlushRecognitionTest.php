@@ -14,7 +14,7 @@ class StraightFlushRecognitionTest extends TestCase
      * @test
      * @dataProvider straightFlushProvider
      */
-    public function canRecognizeRoyalFLush(array $cards, bool $expectedResult): void
+    public function canRecognizeStraightFlush(array $cards, bool $expectedResult): void
     {
         $result = Hand::isRecognizedStraightFlush($cards);
 

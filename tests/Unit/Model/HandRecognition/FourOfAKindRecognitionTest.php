@@ -14,7 +14,7 @@ class FourOfAKindRecognitionTest extends TestCase
      * @test
      * @dataProvider fourOfAKindProvider
      */
-    public function canRecognizeRoyalFLush(array $cards, bool $expectedResult): void
+    public function canRecognizeFourOfAKind(array $cards, bool $expectedResult): void
     {
         $result = Hand::isRecognizedFourOfAKind($cards);
 

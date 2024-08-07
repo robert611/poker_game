@@ -343,4 +343,45 @@ enum Hand: int
 
         return false;
     }
+
+    /**
+     * @param Card[] $cards
+     */
+    public static function isRecognizedTwoPairs(array $cards): bool
+    {
+        $ranks = [
+            CardRank::ACE->value => [],
+            CardRank::KING->value => [],
+            CardRank::QUEEN->value => [],
+            CardRank::JACK->value => [],
+            CardRank::TEN->value => [],
+            CardRank::NINE->value => [],
+            CardRank::EIGHT->value => [],
+            CardRank::SEVEN->value => [],
+            CardRank::SIX->value => [],
+            CardRank::FIVE->value => [],
+            CardRank::FOUR->value => [],
+            CardRank::THREE->value => [],
+            CardRank::TWO->value => [],
+        ];
+
+        foreach ($cards as $card) {
+            $ranks[$card->getRank()->value][] = $card;
+        }
+
+        $ranksWithTwoCards = 0;
+
+        /** @var Card[] $rankCards */
+        foreach ($ranks as $rankCards) {
+            if (count($rankCards) === 2) {
+                $ranksWithTwoCards += 1;
+            }
+        }
+
+        if ($ranksWithTwoCards >= 2) {
+            return true;
+        }
+
+        return false;
+    }
 }

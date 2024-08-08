@@ -50,9 +50,19 @@ enum Hand: int
         };
     }
 
-    public static function compareHands(Hand $firstHand, Hand $secondHand): bool
+    /**
+     * Function returns
+     * -1 if $firstHand is weaker than $secondHand
+     * 0 if they are equal
+     * 1 if $firstHand is stronger than $secondHand
+     */
+    public static function compareHands(Hand $firstHand, Hand $secondHand): int
     {
-        return true;
+        if ($firstHand->value !== $secondHand->value) {
+            return $firstHand->value <=> $secondHand->value;
+        }
+
+        return 0;
     }
 
     /**

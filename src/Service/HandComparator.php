@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\Domain\Hand;
 use App\Model\GameResult;
 use App\Model\UserCards;
 use App\Model\UserResult;
@@ -35,6 +36,13 @@ class HandComparator
         }
 
         // W tym przypadku trzeba porównać te same układy, żeby ustalić kolejność
+
+        // Potrzebuje pętli z góry, która pozmienia miejsca w tablicy z $usersCards, oraz samej funkcji
+        // compareHands w modelu Hands
+
+        uasort($usersCards, function (UserCards $a, UserCards $b) {
+            return Hand::compareHands($a->getHand(), $b->getHand());
+        });
 
         return new GameResult();
     }

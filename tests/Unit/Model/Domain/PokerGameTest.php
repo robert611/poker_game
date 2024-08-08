@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Unit\Model;
+namespace App\Tests\Unit\Model\Domain;
 
-use App\Model\Card;
-use App\Model\PokerGame;
+use App\Model\Domain\Card;
+use App\Model\Domain\PokerGame;
 use PHPUnit\Framework\TestCase;
 
 class PokerGameTest extends TestCase

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Unit\Model;
+namespace App\Tests\Unit\Model\Domain;
 
-use App\Model\CardRank;
+use App\Model\Domain\CardRank;
 use PHPUnit\Framework\TestCase;
 
 class CardRankTest extends TestCase

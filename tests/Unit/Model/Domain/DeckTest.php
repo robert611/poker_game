@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Unit\Model;
+namespace App\Tests\Unit\Model\Domain;
 
-use App\Model\Card;
-use App\Model\CardRank;
-use App\Model\CardSuit;
-use App\Model\Deck;
+use App\Model\Domain\Card;
+use App\Model\Domain\CardRank;
+use App\Model\Domain\CardSuit;
+use App\Model\Domain\Deck;
 use PHPUnit\Framework\TestCase;
 
 class DeckTest extends TestCase

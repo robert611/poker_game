@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Model\Domain;
 
 enum Hand: int
 {
@@ -32,28 +32,25 @@ enum Hand: int
     }
 
     /**
-     * @param Card[] $playerCards
-     * @param Card[] $dealtCards
+     * @param Card[] $cards
      */
-    public static function recognizeHand(array $playerCards, array $dealtCards, Card $turn, Card $river): Hand
+    public static function recognizeHand(array $cards): Hand
     {
-        $allCards = array_merge($playerCards, $dealtCards, [$turn, $river]);
-
         return match (true) {
-            self::isRecognizedRoyalFlush($allCards) => Hand::ROYAL_FLUSH,
-            self::isRecognizedStraightFlush($allCards) => Hand::STRAIGHT_FLUSH,
-            self::isRecognizedFourOfAKind($allCards) => Hand::FOUR_OF_A_KIND,
-            self::isRecognizedFullHouse($allCards) => Hand::FULL_HOUSE,
-            self::isRecognizedFlush($allCards) => Hand::FLUSH,
-            self::isRecognizedStraight($allCards) => Hand::STRAIGHT,
-            self::isRecognizedThreeOfAKind($allCards) => Hand::THREE_OF_A_KIND,
-            self::isRecognizedTwoPairs($allCards) => Hand::TWO_PAIRS,
-            self::isRecognizedOnePair($allCards) => Hand::PAIR,
+            self::isRecognizedRoyalFlush($cards) => Hand::ROYAL_FLUSH,
+            self::isRecognizedStraightFlush($cards) => Hand::STRAIGHT_FLUSH,
+            self::isRecognizedFourOfAKind($cards) => Hand::FOUR_OF_A_KIND,
+            self::isRecognizedFullHouse($cards) => Hand::FULL_HOUSE,
+            self::isRecognizedFlush($cards) => Hand::FLUSH,
+            self::isRecognizedStraight($cards) => Hand::STRAIGHT,
+            self::isRecognizedThreeOfAKind($cards) => Hand::THREE_OF_A_KIND,
+            self::isRecognizedTwoPairs($cards) => Hand::TWO_PAIRS,
+            self::isRecognizedOnePair($cards) => Hand::PAIR,
             default => Hand::HIGHEST_CARD,
         };
     }
 
-    public static function compareHands(): bool
+    public static function compareHands(Hand $firstHand, Hand $secondHand): bool
     {
         return true;
     }

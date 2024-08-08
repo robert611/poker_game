@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Unit\Model\HandRecognition;
+namespace App\Tests\Unit\Model\Domain\HandRecognition;
 
-use App\Model\Card;
-use App\Model\CardRank;
-use App\Model\CardSuit;
-use App\Model\Hand;
+use App\Model\Domain\Card;
+use App\Model\Domain\CardRank;
+use App\Model\Domain\CardSuit;
+use App\Model\Domain\Hand;
 use PHPUnit\Framework\TestCase;
 
 class OnePairRecognitionTest extends TestCase

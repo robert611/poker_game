@@ -13,7 +13,7 @@ class DifferentHandsComparisonTest extends TestCase
      */
     public function canCompareDifferentHands(Hand $firstCard, Hand $secondHard, int $expectedResult): void
     {
-        $result = Hand::compareHands($firstCard, $secondHard);
+        $result = Hand::compareHands($firstCard, [], $secondHard, []);
 
         self::assertSame($expectedResult, $result);
     }

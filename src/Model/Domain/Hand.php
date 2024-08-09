@@ -56,10 +56,21 @@ enum Hand: int
      * 0 if they are equal
      * 1 if $firstHand is stronger than $secondHand
      */
-    public static function compareHands(Hand $firstHand, Hand $secondHand): int
-    {
+    public static function compareHands(
+        Hand $firstHand,
+        array $firstHandCards,
+        Hand $secondHand,
+        array $secondHandCards,
+    ): int {
         if ($firstHand->value !== $secondHand->value) {
             return $firstHand->value <=> $secondHand->value;
+        }
+
+        if ($firstHand === Hand::HIGHEST_CARD) {
+            $firstHandHighestCard = Card::getHighestCard($firstHandCards);
+            $secondHandHighestCard = Card::getHighestCard($secondHandCards);
+
+            return $firstHandHighestCard->getRank()->getStrength() <=> $secondHandHighestCard->getRank()->getStrength();
         }
 
         return 0;

@@ -41,7 +41,7 @@ class HandComparator
         // compareHands w modelu Hands
 
         uasort($usersCards, function (UserCards $a, UserCards $b) {
-            return Hand::compareHands($a->getHand(), $b->getHand());
+            return Hand::compareHands($a->getHand(), $a->getCards(), $b->getHand(), $b->getCards());
         });
 
         return new GameResult();

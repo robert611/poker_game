@@ -54,6 +54,31 @@ class Card
         return $cards;
     }
 
+    /**
+     * @param Card[] $cards
+     */
+    public static function getHighestCard(array $cards): ?self
+    {
+        if (empty($cards)) {
+            return null;
+        }
+
+        $highestCard = null;
+
+        foreach ($cards as $card) {
+            if (null === $highestCard) {
+                $highestCard = $card;
+                continue;
+            }
+
+            if ($card->getRank()->getStrength() > $highestCard->getRank()->getStrength()) {
+                $highestCard = $card;
+            }
+        }
+
+        return $highestCard;
+    }
+
     public static function isOfTheSameSuit(Card $a, Card $b): bool
     {
         if ($a->getSuit() === $b->getSuit()) {

@@ -11,9 +11,9 @@ class DifferentHandsComparisonTest extends TestCase
      * @test
      * @dataProvider casesProvider
      */
-    public function canCompareDifferentHands(Hand $firstCard, Hand $secondHard, int $expectedResult): void
+    public function canCompareDifferentHands(Hand $firstHand, Hand $secondHand, int $expectedResult): void
     {
-        $result = Hand::compareHands($firstCard, [], $secondHard, []);
+        $result = Hand::compareHands($firstHand, [], $secondHand, []);
 
         self::assertSame($expectedResult, $result);
     }

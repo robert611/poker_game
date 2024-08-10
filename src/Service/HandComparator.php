@@ -15,7 +15,7 @@ class HandComparator
     public function compareHands(array $usersCards): GameResult
     {
         uasort($usersCards, function (UserCards $a, UserCards $b) {
-            return $a->getHand()->value <=> $b->getHand()->value;
+            return $b->getHand()->value <=> $a->getHand()->value;
         });
 
         $isHandRepeated = UserCards::hasRepeatedHand($usersCards);

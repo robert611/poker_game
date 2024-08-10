@@ -57,8 +57,76 @@ class HandComparatorTest extends TestCase
 
         // then
         self::assertInstanceOf(GameResult::class, $gameResult);
-        self::assertEquals(2, $gameResult->getUserResults()[0]->getUserId());
-        self::assertEquals(3, $gameResult->getUserResults()[1]->getUserId());
-        self::assertEquals(1, $gameResult->getUserResults()[2]->getUserId());
+        self::assertEquals(1, $gameResult->getUserResultByUserId(2)->getPlace());
+        self::assertEquals(2, $gameResult->getUserResultByUserId(3)->getPlace());
+        self::assertEquals(3, $gameResult->getUserResultByUserId(1)->getPlace());
+    }
+
+    /**
+     * @test
+     */
+    public function canCompareHighestCardHands(): void
+    {
+        // given
+        $firstUserCards = UserCards::create(
+            1,
+            [
+                Card::create(CardRank::FIVE, CardSuit::HEARTS),
+                Card::create(CardRank::FOUR, CardSuit::SPADES),
+            ],
+            Hand::HIGHEST_CARD,
+        );
+        $secondUserCards = UserCards::create(
+            2,
+            [
+                Card::create(CardRank::THREE, CardSuit::HEARTS),
+                Card::create(CardRank::QUEEN, CardSuit::SPADES),
+                Card::create(CardRank::THREE, CardSuit::DIAMONDS),
+                Card::create(CardRank::NINE, CardSuit::CLUBS),
+            ],
+            Hand::HIGHEST_CARD,
+        );
+        $thirdUserCards = UserCards::create(
+            3,
+            [
+                Card::create(CardRank::SIX, CardSuit::HEARTS),
+                Card::create(CardRank::SIX, CardSuit::SPADES),
+                Card::create(CardRank::TEN, CardSuit::DIAMONDS),
+                Card::create(CardRank::TWO, CardSuit::CLUBS),
+            ],
+            Hand::HIGHEST_CARD,
+        );
+        $fourthUserCards = UserCards::create(
+            4,
+            [
+                Card::create(CardRank::TWO, CardSuit::HEARTS),
+            ],
+            Hand::HIGHEST_CARD,
+        );
+        $fifthUserCards = UserCards::create(
+            5,
+            [
+                Card::create(CardRank::NINE, CardSuit::HEARTS),
+            ],
+            Hand::HIGHEST_CARD,
+        );
+
+        // when
+        $handComparator = new HandComparator();
+        $gameResult = $handComparator->compareHands([
+            $firstUserCards,
+            $secondUserCards,
+            $thirdUserCards,
+            $fourthUserCards,
+            $fifthUserCards,
+        ]);
+
+        // then
+        self::assertInstanceOf(GameResult::class, $gameResult);
+        self::assertEquals(1, $gameResult->getUserResultByUserId(2)->getPlace()); // Queen
+        self::assertEquals(2, $gameResult->getUserResultByUserId(3)->getPlace()); // TEN
+        self::assertEquals(3, $gameResult->getUserResultByUserId(5)->getPlace()); // NINE
+        self::assertEquals(4, $gameResult->getUserResultByUserId(1)->getPlace()); // FIVE
+        self::assertEquals(5, $gameResult->getUserResultByUserId(4)->getPlace()); // TWO
     }
 }

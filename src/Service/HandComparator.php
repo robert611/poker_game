@@ -14,36 +14,21 @@ class HandComparator
      */
     public function compareHands(array $usersCards): GameResult
     {
-        uasort($usersCards, function (UserCards $a, UserCards $b) {
-            return $b->getHand()->value <=> $a->getHand()->value;
+        usort($usersCards, function (UserCards $a, UserCards $b) {
+            return Hand::compareHands($b->getHand(), $b->getCards(), $a->getHand(), $a->getCards());
         });
 
-        $isHandRepeated = UserCards::hasRepeatedHand($usersCards);
+        $userResults = [];
 
-        if (false === $isHandRepeated) {
-            $userResults = [];
-
-            foreach ($usersCards as $key => $userCards) {
-                $userResults[] = UserResult::create(
-                    $userCards->getUserId(),
-                    $userCards->getCards(),
-                    $key + 1,
-                    $userCards->getHand(),
-                );
-            }
-
-            return GameResult::create($userResults);
+        foreach ($usersCards as $key => $userCards) {
+            $userResults[] = UserResult::create(
+                $userCards->getUserId(),
+                $userCards->getCards(),
+                $key + 1,
+                $userCards->getHand(),
+            );
         }
 
-        // W tym przypadku trzeba porównać te same układy, żeby ustalić kolejność
-
-        // Potrzebuje pętli z góry, która pozmienia miejsca w tablicy z $usersCards, oraz samej funkcji
-        // compareHands w modelu Hands
-
-        uasort($usersCards, function (UserCards $a, UserCards $b) {
-            return Hand::compareHands($a->getHand(), $a->getCards(), $b->getHand(), $b->getCards());
-        });
-
-        return new GameResult();
+        return GameResult::create($userResults);
     }
 }

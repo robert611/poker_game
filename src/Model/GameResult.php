@@ -29,4 +29,15 @@ class GameResult
 
         return $gameResult;
     }
+
+    public function getUserResultByUserId(int $userId): ?UserResult
+    {
+        foreach ($this->userResults as $userResult) {
+            if ($userResult->getUserId() === $userId) {
+                return $userResult;
+            }
+        }
+
+        return null;
+    }
 }

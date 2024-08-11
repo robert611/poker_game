@@ -73,6 +73,24 @@ enum Hand: int
             return $firstHandHighestCard->getRank()->getStrength() <=> $secondHandHighestCard->getRank()->getStrength();
         }
 
+        if ($firstHand === Hand::TWO_PAIRS) {
+            $firstHandPairsRanks = Card::getPairsCardsRanks($firstHandCards);
+            $secondHandPairsRanks = Card::getPairsCardsRanks($secondHandCards);
+
+            $firstHandPairsRanks = CardRank::sortRanksFromBiggest($firstHandPairsRanks);
+            $secondHandPairsRanks = CardRank::sortRanksFromBiggest($secondHandPairsRanks);
+
+            if ($firstHandPairsRanks[0] !== $secondHandPairsRanks[0]) {
+                return $firstHandPairsRanks[0]->getStrength() <=> $secondHandPairsRanks[0]->getStrength();
+            }
+
+            if ($firstHandPairsRanks[1] !== $secondHandPairsRanks[1]) {
+                return $firstHandPairsRanks[1]->getStrength() <=> $secondHandPairsRanks[1]->getStrength();
+            }
+
+            return 0;
+        }
+
         return 0;
     }
 

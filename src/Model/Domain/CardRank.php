@@ -73,4 +73,17 @@ enum CardRank: string
 
         return false;
     }
+
+    /**
+     * @param CardRank[] $ranks
+     * @return CardRank[]
+     */
+    public static function sortRanksFromBiggest(array $ranks): array
+    {
+        // Original array given in an argument will not be sorted as it's clone not the pointer is passed
+
+        usort($ranks, fn(CardRank $a, CardRank $b) => $b->getStrength() <=> $a->getStrength());
+
+        return $ranks;
+    }
 }

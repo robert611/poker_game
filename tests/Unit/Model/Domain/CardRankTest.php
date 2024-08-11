@@ -17,6 +17,31 @@ class CardRankTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
+    /**
+     * @test
+     */
+    public function canSortRanksFromBiggest(): void
+    {
+        // given
+        $ranks = [
+            CardRank::NINE,
+            CardRank::ACE,
+            CardRank::FOUR,
+            CardRank::SIX,
+            CardRank::JACK,
+        ];
+
+        // when
+        $sortedRanks = CardRank::sortRanksFromBiggest($ranks);
+
+        // then
+        self::assertSame(CardRank::ACE, $sortedRanks[0]);
+        self::assertSame(CardRank::JACK, $sortedRanks[1]);
+        self::assertSame(CardRank::NINE, $sortedRanks[2]);
+        self::assertSame(CardRank::SIX, $sortedRanks[3]);
+        self::assertSame(CardRank::FOUR, $sortedRanks[4]);
+    }
+
     public function rankDataProvider(): array
     {
         return [

@@ -14,17 +14,35 @@ class HandComparator
      */
     public function compareHands(array $usersCards): GameResult
     {
-        usort($usersCards, function (UserCards $a, UserCards $b) {
-            return Hand::compareHands($b->getHand(), $b->getCards(), $a->getHand(), $a->getCards());
+        $draws = [];
+
+        usort($usersCards, function (UserCards $a, UserCards $b) use (&$draws) {
+            $comparison = Hand::compareHands($b->getHand(), $b->getCards(), $a->getHand(), $a->getCards());
+
+            if ($comparison === 0) {
+                $draws[] = [$a->getUserId(), $b->getUserId()];
+            }
+
+            return $comparison;
         });
 
         $userResults = [];
+        $currentPlace = 1;
 
         foreach ($usersCards as $key => $userCards) {
+            if (false === isset($usersCards[$key - 1])) {
+                $place = 1;
+            } else if (in_array([$usersCards[$key - 1]->getUserId(), $userCards->getUserId()], $draws)) {
+                $place = $currentPlace;
+            } else {
+                $currentPlace = $key + 1;
+                $place = $currentPlace;
+            }
+
             $userResults[] = UserResult::create(
                 $userCards->getUserId(),
                 $userCards->getCards(),
-                $key + 1,
+                $place,
                 $userCards->getHand(),
             );
         }

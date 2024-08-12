@@ -178,6 +178,13 @@ class HandComparatorTest extends TestCase
             ],
             Hand::THREE_OF_A_KIND,
         );
+        $sixthUserCards = UserCards::create(
+            6,
+            [
+                Card::create(CardRank::JACK, CardSuit::HEARTS),
+            ],
+            Hand::HIGHEST_CARD,
+        );
 
         // when
         $handComparator = new HandComparator();
@@ -187,6 +194,7 @@ class HandComparatorTest extends TestCase
             $thirdUserCards,
             $fourthUserCards,
             $fifthUserCards,
+            $sixthUserCards,
         ]);
 
         // then
@@ -196,5 +204,6 @@ class HandComparatorTest extends TestCase
         self::assertEquals(3, $gameResult->getUserResultByUserId(1)->getPlace()); // Highest card Ace
         self::assertEquals(3, $gameResult->getUserResultByUserId(2)->getPlace()); // Highest card Ace
         self::assertEquals(3, $gameResult->getUserResultByUserId(3)->getPlace()); // Highest card Ace
+        self::assertEquals(6, $gameResult->getUserResultByUserId(6)->getPlace()); // Highest card jack
     }
 }

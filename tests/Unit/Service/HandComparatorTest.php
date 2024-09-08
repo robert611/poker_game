@@ -9,13 +9,12 @@ use App\Model\Domain\Hand;
 use App\Model\GameResult;
 use App\Model\UserCards;
 use App\Service\HandComparator;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class HandComparatorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canCompareDifferentHands(): void
     {
         // given
@@ -62,9 +61,7 @@ class HandComparatorTest extends TestCase
         self::assertEquals(3, $gameResult->getUserResultByUserId(1)->getPlace());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCompareHighestCardHands(): void
     {
         // given
@@ -130,9 +127,7 @@ class HandComparatorTest extends TestCase
         self::assertEquals(5, $gameResult->getUserResultByUserId(4)->getPlace()); // TWO
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRecognizeADrawBetweenHands(): void
     {
         // given

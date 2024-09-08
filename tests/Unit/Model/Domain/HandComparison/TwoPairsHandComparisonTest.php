@@ -8,14 +8,14 @@ use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
 use App\Model\Domain\Hand;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class TwoPairsHandComparisonTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider casesProvider
-     */
+    #[Test]
+    #[DataProvider('casesProvider')]
     public function canCompareTwoPairsHands(
         Hand $firstHand,
         array $firstHandCards,
@@ -28,7 +28,7 @@ class TwoPairsHandComparisonTest extends TestCase
         self::assertSame($expectedResult, $result);
     }
 
-    public function casesProvider(): array
+    public static function casesProvider(): array
     {
         return [
             [

@@ -6,14 +6,14 @@ use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
 use App\Model\Domain\Hand;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class OnePairRecognitionTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider onePairProvider
-     */
+    #[Test]
+    #[DataProvider('onePairProvider')]
     public function canRecognizeOnePair(array $cards, bool $expectedResult): void
     {
         $result = Hand::isRecognizedOnePair($cards);
@@ -21,7 +21,7 @@ class OnePairRecognitionTest extends TestCase
         self::assertSame($expectedResult, $result);
     }
 
-    public function onePairProvider(): array
+    public static function onePairProvider(): array
     {
         return [
             [

@@ -6,14 +6,14 @@ use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
 use App\Model\Domain\Hand;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ThreeOfAKindRecognitionTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider threeOfAKindProvider
-     */
+    #[Test]
+    #[DataProvider('threeOfAKindProvider')]
     public function canRecognizeThreeOfAKind(array $cards, bool $expectedResult): void
     {
         $result = Hand::isRecognizedThreeOfAKind($cards);
@@ -21,7 +21,7 @@ class ThreeOfAKindRecognitionTest extends TestCase
         self::assertSame($expectedResult, $result);
     }
 
-    public function threeOfAKindProvider(): array
+    public static function threeOfAKindProvider(): array
     {
         return [
             [

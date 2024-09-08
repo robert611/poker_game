@@ -6,14 +6,14 @@ use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
 use App\Model\Domain\Hand;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class HighestCardHandComparisonTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider casesProvider
-     */
+    #[Test]
+    #[DataProvider('casesProvider')]
     public function canCompareDifferentHands(
         Hand $firstHand,
         array $firstHandCards,
@@ -26,7 +26,7 @@ class HighestCardHandComparisonTest extends TestCase
         self::assertSame($expectedResult, $result);
     }
 
-    public function casesProvider(): array
+    public static function casesProvider(): array
     {
         return [
             [

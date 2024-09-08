@@ -44,7 +44,7 @@ class UserResult
         $userResult->userId = $userId;
         $userResult->place = $place;
         $userResult->hand = $hand;
-        $userResult->cards = [];
+        $userResult->cards = $cards;
 
         return $userResult;
     }

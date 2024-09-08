@@ -4,13 +4,12 @@ namespace App\Tests\Unit\Model;
 
 use App\Model\Domain\Hand;
 use App\Model\UserCards;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class UserCardsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function willSeeThatHandIsRepeated(): void
     {
         // given
@@ -31,9 +30,7 @@ class UserCardsTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function willSeeThatHandIsNotRepeated(): void
     {
         // given

@@ -3,23 +3,21 @@
 namespace App\Tests\Unit\Model\Domain;
 
 use App\Model\Domain\CardRank;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class CardRankTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider rankDataProvider
-     */
+    #[Test]
+    #[DataProvider('rankDataProvider')]
     public function canValidateIfRankIsOneBigger(CardRank $firstRank, CardRank $secondRank, bool $expectedResult): void
     {
         $actualResult = CardRank::isRankOneBigger($firstRank, $secondRank);
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSortRanksFromBiggest(): void
     {
         // given
@@ -42,7 +40,7 @@ class CardRankTest extends TestCase
         self::assertSame(CardRank::FOUR, $sortedRanks[4]);
     }
 
-    public function rankDataProvider(): array
+    public static function rankDataProvider(): array
     {
         return [
             [CardRank::KING, CardRank::ACE, true],

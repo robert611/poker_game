@@ -6,13 +6,12 @@ use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
 use App\Model\Domain\Deck;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class DeckTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canPopCard(): void
     {
         $firstCard = Card::create(CardRank::TWO, CardSuit::CLUBS);
@@ -25,9 +24,7 @@ class DeckTest extends TestCase
         self::assertSame($firstCard, $deck->popCard());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateDeck(): void
     {
         $deck = Deck::createDeck();
@@ -37,9 +34,7 @@ class DeckTest extends TestCase
         self::assertTrue($deck->isInitialDeckValid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canShuffleCards(): void
     {
         $deck = Deck::createDeck();

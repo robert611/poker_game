@@ -6,14 +6,14 @@ use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
 use App\Model\Domain\Hand;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class FourOfAKindRecognitionTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider fourOfAKindProvider
-     */
+    #[Test]
+    #[DataProvider('fourOfAKindProvider')]
     public function canRecognizeFourOfAKind(array $cards, bool $expectedResult): void
     {
         $result = Hand::isRecognizedFourOfAKind($cards);
@@ -21,7 +21,7 @@ class FourOfAKindRecognitionTest extends TestCase
         self::assertSame($expectedResult, $result);
     }
 
-    public function fourOfAKindProvider(): array
+    public static function fourOfAKindProvider(): array
     {
         return [
             [

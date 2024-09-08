@@ -5,17 +5,17 @@ namespace App\Tests\Unit\Model\Domain;
 use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class CardTest extends TestCase
 {
     /**
-     * @test
-     *
      * @param Card[] $cards
-     *
-     * @dataProvider getHighestCardProvider
      */
+    #[Test]
+    #[DataProvider('getHighestCardProvider')]
     public function canGetHighesCard(array $cards, ?Card $expectedHighestCard): void
     {
         $highestCard = Card::getHighestCard($cards);
@@ -23,10 +23,7 @@ class CardTest extends TestCase
         self::assertEquals($expectedHighestCard?->getRank(), $highestCard?->getRank());
     }
 
-    /**
-     * @test
-     */
-    public function canGetPairsCards(): void
+    #[Test] public function canGetPairsCards(): void
     {
         $cards = [
             Card::create(CardRank::ACE, CardSuit::CLUBS),
@@ -47,7 +44,7 @@ class CardTest extends TestCase
         self::assertSame(CardRank::JACK, $pairsCards[2]);
     }
 
-    public function getHighestCardProvider(): array
+    public static function getHighestCardProvider(): array
     {
         return [
             [

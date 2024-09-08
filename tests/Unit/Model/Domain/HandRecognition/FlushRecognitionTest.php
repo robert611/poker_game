@@ -6,14 +6,14 @@ use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
 use App\Model\Domain\Hand;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class FlushRecognitionTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider flushProvider
-     */
+    #[Test]
+    #[DataProvider('flushProvider')]
     public function canRecognizeFlush(array $cards, bool $expectedResult): void
     {
         $result = Hand::isRecognizedFlush($cards);
@@ -21,7 +21,7 @@ class FlushRecognitionTest extends TestCase
         self::assertSame($expectedResult, $result);
     }
 
-    public function flushProvider(): array
+    public static function flushProvider(): array
     {
         return [
             [

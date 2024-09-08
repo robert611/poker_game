@@ -4,13 +4,12 @@ namespace App\Tests\Unit\Model\Domain;
 
 use App\Model\Domain\Card;
 use App\Model\Domain\PokerGame;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class PokerGameTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canDealCards(): void
     {
         $pokerGame = PokerGame::create();
@@ -25,9 +24,7 @@ class PokerGameTest extends TestCase
         self::assertSame($dealtCards[0], $lastCardInDeck);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canFlopCards(): void
     {
         $pokerGame = PokerGame::create();
@@ -42,9 +39,7 @@ class PokerGameTest extends TestCase
         self::assertSame($floppedCards[2], $deckCards[count($deckCards) - 3]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canTurn(): void
     {
         $pokerGame = PokerGame::create();
@@ -56,9 +51,7 @@ class PokerGameTest extends TestCase
         self::assertSame($turnCard, $lastCardInDeck);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRiver(): void
     {
         $pokerGame = PokerGame::create();
@@ -70,9 +63,7 @@ class PokerGameTest extends TestCase
         self::assertSame($riverCard, $lastCardInDeck);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canGoThroughWholeGame(): void
     {
         $pokerGame = PokerGame::create();

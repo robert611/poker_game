@@ -2,6 +2,8 @@
 
 namespace App\Model\Domain;
 
+use App\Model\Domain\HandComparison\ThreeOfAKindHandComparison;
+
 enum Hand: int
 {
     case HIGHEST_CARD = 1;
@@ -89,6 +91,10 @@ enum Hand: int
             }
 
             return 0;
+        }
+
+        if ($firstHand === Hand::THREE_OF_A_KIND) {
+            return ThreeOfAKindHandComparison::compare($firstHandCards, $secondHandCards);
         }
 
         return 0;

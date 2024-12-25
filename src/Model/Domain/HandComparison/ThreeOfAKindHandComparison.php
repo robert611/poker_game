@@ -13,6 +13,9 @@ class ThreeOfAKindHandComparison implements HandComparisonInterface
         // Bo zaczynam porównywać od największej i aż któraś wygra.
 
         // Czyli najpierw rozdziel trójkę i pozostałe karty.
+        // Super? Ale jak to zrobić?
+
+
 
         return 0;
     }

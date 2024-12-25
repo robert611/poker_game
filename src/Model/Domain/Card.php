@@ -55,31 +55,6 @@ class Card
     }
 
     /**
-     * @param Card[] $cards
-     */
-    public static function getHighestCard(array $cards): ?self
-    {
-        if (empty($cards)) {
-            return null;
-        }
-
-        $highestCard = null;
-
-        foreach ($cards as $card) {
-            if (null === $highestCard) {
-                $highestCard = $card;
-                continue;
-            }
-
-            if ($card->getRank()->getStrength() > $highestCard->getRank()->getStrength()) {
-                $highestCard = $card;
-            }
-        }
-
-        return $highestCard;
-    }
-
-    /**
      * Purpose of the function is to find all the cards that have pairs
      * For instance two aces and two jacks would return an array comprised of an ace and a jack
      * in ascending order
@@ -111,6 +86,16 @@ class Card
         }
 
         return $pairsCards;
+    }
+
+    public function getThreeOfAKindCardsRank(): CardRank
+    {
+        // Pytanie czy nie mogę reużyć funkcji Hand::isRecognizedThreeOfAKind
+        // Ona zasadniczo wykrywa trójki i wie jakie karty je tworzą ale później inaczej manipuluje taki wynik
+        // Może trzeba stworzyć w folderze Model\Domain klasy dla każdego układu i tam trzymać funkcje, które obecnie
+        // trzymam w Card.php i Hand.php
+        // Wymagałoby to ich przeniesienia oraz przeniesienia testów
+        // Pytanie czy warto to tak zrobić?
     }
 
     public static function isOfTheSameSuit(Card $a, Card $b): bool

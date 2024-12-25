@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Domain;
 
+use App\Model\Domain\Hand\HighestCard;
 use App\Model\Domain\HandComparison\ThreeOfAKindHandComparison;
 
 enum Hand: int
@@ -71,8 +72,8 @@ enum Hand: int
         }
 
         if ($firstHand === Hand::HIGHEST_CARD) {
-            $firstHandHighestCard = Card::getHighestCard($firstHandCards);
-            $secondHandHighestCard = Card::getHighestCard($secondHandCards);
+            $firstHandHighestCard = HighestCard::getHighestCard($firstHandCards);
+            $secondHandHighestCard = HighestCard::getHighestCard($secondHandCards);
 
             return $firstHandHighestCard->getRank()->getStrength() <=> $secondHandHighestCard->getRank()->getStrength();
         }

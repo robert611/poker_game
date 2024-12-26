@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Tests\Unit\Model\Domain\HandRecognition;
+declare(strict_types=1);
+
+namespace App\Tests\Unit\Model\Domain\Hand\HandRecognition;
 
 use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
@@ -10,41 +12,41 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class ThreeOfAKindRecognitionTest extends TestCase
+class StraightRecognitionTest extends TestCase
 {
     #[Test]
-    #[DataProvider('threeOfAKindProvider')]
-    public function canRecognizeThreeOfAKind(array $cards, bool $expectedResult): void
+    #[DataProvider('straightProvider')]
+    public function canRecognizeStraight(array $cards, bool $expectedResult): void
     {
-        $result = Hand::isRecognizedThreeOfAKind($cards);
+        $result = Hand::isRecognizedStraight($cards);
 
         self::assertSame($expectedResult, $result);
     }
 
-    public static function threeOfAKindProvider(): array
+    public static function straightProvider(): array
     {
         return [
             [
                 [
                     Card::create(CardRank::FIVE, CardSuit::HEARTS),
                     Card::create(CardRank::JACK, CardSuit::HEARTS),
-                    Card::create(CardRank::ACE, CardSuit::HEARTS),
-                    Card::create(CardRank::FIVE, CardSuit::SPADES),
-                    Card::create(CardRank::FIVE, CardSuit::CLUBS),
+                    Card::create(CardRank::SIX, CardSuit::HEARTS),
+                    Card::create(CardRank::EIGHT, CardSuit::HEARTS),
+                    Card::create(CardRank::TEN, CardSuit::HEARTS),
                     Card::create(CardRank::SEVEN, CardSuit::HEARTS),
-                    Card::create(CardRank::TWO, CardSuit::SPADES),
+                    Card::create(CardRank::NINE, CardSuit::SPADES),
                 ],
                 true,
             ],
             [
                 [
-                    Card::create(CardRank::JACK, CardSuit::HEARTS),
+                    Card::create(CardRank::FIVE, CardSuit::HEARTS),
                     Card::create(CardRank::QUEEN, CardSuit::DIAMONDS),
-                    Card::create(CardRank::FOUR, CardSuit::DIAMONDS),
+                    Card::create(CardRank::JACK, CardSuit::DIAMONDS),
                     Card::create(CardRank::TWO, CardSuit::SPADES),
                     Card::create(CardRank::THREE, CardSuit::CLUBS),
-                    Card::create(CardRank::FOUR, CardSuit::SPADES),
-                    Card::create(CardRank::QUEEN, CardSuit::SPADES),
+                    Card::create(CardRank::ACE, CardSuit::HEARTS),
+                    Card::create(CardRank::KING, CardSuit::SPADES),
                 ],
                 false,
             ],
@@ -62,13 +64,13 @@ class ThreeOfAKindRecognitionTest extends TestCase
             ],
             [
                 [
-                    Card::create(CardRank::JACK, CardSuit::HEARTS),
-                    Card::create(CardRank::QUEEN, CardSuit::DIAMONDS),
-                    Card::create(CardRank::JACK, CardSuit::DIAMONDS),
-                    Card::create(CardRank::TWO, CardSuit::SPADES),
-                    Card::create(CardRank::THREE, CardSuit::CLUBS),
+                    Card::create(CardRank::FOUR, CardSuit::DIAMONDS),
+                    Card::create(CardRank::FIVE, CardSuit::DIAMONDS),
+                    Card::create(CardRank::SIX, CardSuit::DIAMONDS),
+                    Card::create(CardRank::SEVEN, CardSuit::SPADES),
+                    Card::create(CardRank::EIGHT, CardSuit::DIAMONDS),
+                    Card::create(CardRank::SIX, CardSuit::SPADES),
                     Card::create(CardRank::JACK, CardSuit::SPADES),
-                    Card::create(CardRank::KING, CardSuit::SPADES),
                 ],
                 true,
             ],

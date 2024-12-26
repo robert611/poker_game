@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Tests\Unit\Model\Domain\HandRecognition;
+declare(strict_types=1);
+
+namespace App\Tests\Unit\Model\Domain\Hand\HandRecognition;
 
 use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;

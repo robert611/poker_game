@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Tests\Unit\Model\Domain\HandRecognition;
+declare(strict_types=1);
+
+namespace App\Tests\Unit\Model\Domain\Hand\HandRecognition;
 
 use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
-use App\Model\Domain\Hand;
+use App\Model\Domain\Hand\Pair;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -16,7 +18,7 @@ class OnePairRecognitionTest extends TestCase
     #[DataProvider('onePairProvider')]
     public function canRecognizeOnePair(array $cards, bool $expectedResult): void
     {
-        $result = Hand::isRecognizedOnePair($cards);
+        $result = Pair::isRecognizedOnePair($cards);
 
         self::assertSame($expectedResult, $result);
     }

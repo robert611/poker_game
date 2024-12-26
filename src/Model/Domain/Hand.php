@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Domain;
 
 use App\Model\Domain\Hand\HighestCard;
+use App\Model\Domain\Hand\Pair;
 use App\Model\Domain\HandComparison\ThreeOfAKindHandComparison;
 
 enum Hand: int
@@ -50,7 +51,7 @@ enum Hand: int
             self::isRecognizedStraight($cards) => Hand::STRAIGHT,
             self::isRecognizedThreeOfAKind($cards) => Hand::THREE_OF_A_KIND,
             self::isRecognizedTwoPairs($cards) => Hand::TWO_PAIRS,
-            self::isRecognizedOnePair($cards) => Hand::PAIR,
+            Pair::isRecognizedOnePair($cards) => Hand::PAIR,
             default => Hand::HIGHEST_CARD,
         };
     }
@@ -76,6 +77,10 @@ enum Hand: int
             $secondHandHighestCard = HighestCard::getHighestCard($secondHandCards);
 
             return $firstHandHighestCard->getRank()->getStrength() <=> $secondHandHighestCard->getRank()->getStrength();
+        }
+
+        if ($firstHand === Hand::PAIR) {
+            return 0; // Unfinished
         }
 
         if ($firstHand === Hand::TWO_PAIRS) {
@@ -425,41 +430,6 @@ enum Hand: int
 
         if ($ranksWithTwoCards >= 2) {
             return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Card[] $cards
-     */
-    public static function isRecognizedOnePair(array $cards): bool
-    {
-        $ranks = [
-            CardRank::ACE->value => [],
-            CardRank::KING->value => [],
-            CardRank::QUEEN->value => [],
-            CardRank::JACK->value => [],
-            CardRank::TEN->value => [],
-            CardRank::NINE->value => [],
-            CardRank::EIGHT->value => [],
-            CardRank::SEVEN->value => [],
-            CardRank::SIX->value => [],
-            CardRank::FIVE->value => [],
-            CardRank::FOUR->value => [],
-            CardRank::THREE->value => [],
-            CardRank::TWO->value => [],
-        ];
-
-        foreach ($cards as $card) {
-            $ranks[$card->getRank()->value][] = $card;
-        }
-
-        /** @var Card[] $rankCards */
-        foreach ($ranks as $rankCards) {
-            if (count($rankCards) === 2) {
-                return true;
-            }
         }
 
         return false;

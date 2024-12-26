@@ -7,29 +7,58 @@ namespace App\Tests\Unit\Model\Domain;
 use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
-use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class CardTest extends TestCase
 {
-    #[Test] public function canGetPairsCards(): void
+    /**
+     * @param Card[] $cards
+     * @param Card[] $sortedCards
+     */
+    #[DataProvider('sortCardsFromLowestProvider')]
+    public function testSortCardsFromLowest(array $cards, array $sortedCards): void
     {
-        $cards = [
-            Card::create(CardRank::ACE, CardSuit::CLUBS),
-            Card::create(CardRank::FIVE, CardSuit::HEARTS),
-            Card::create(CardRank::JACK, CardSuit::DIAMONDS),
-            Card::create(CardRank::JACK, CardSuit::HEARTS),
-            Card::create(CardRank::JACK, CardSuit::CLUBS),
-            Card::create(CardRank::FOUR, CardSuit::HEARTS),
-            Card::create(CardRank::FIVE, CardSuit::SPADES),
-            Card::create(CardRank::FIVE, CardSuit::DIAMONDS),
-            Card::create(CardRank::FOUR, CardSuit::DIAMONDS),
+        self::assertEquals($sortedCards, Card::sortCardsFromLowest($cards));
+    }
+
+    public static function sortCardsFromLowestProvider(): array
+    {
+        return [
+            [
+                [
+                    Card::create(CardRank::ACE, CardSuit::DIAMONDS),
+                    Card::create(CardRank::TWO, CardSuit::DIAMONDS),
+                    Card::create(CardRank::FOUR, CardSuit::DIAMONDS),
+                    Card::create(CardRank::THREE, CardSuit::DIAMONDS),
+                ],
+                [
+                    Card::create(CardRank::TWO, CardSuit::DIAMONDS),
+                    Card::create(CardRank::THREE, CardSuit::DIAMONDS),
+                    Card::create(CardRank::FOUR, CardSuit::DIAMONDS),
+                    Card::create(CardRank::ACE, CardSuit::DIAMONDS),
+                ],
+            ],
+            [
+                [
+                    Card::create(CardRank::TWO, CardSuit::DIAMONDS),
+                    Card::create(CardRank::TWO, CardSuit::CLUBS),
+                    Card::create(CardRank::KING, CardSuit::DIAMONDS),
+                    Card::create(CardRank::THREE, CardSuit::DIAMONDS),
+                    Card::create(CardRank::JACK, CardSuit::SPADES),
+                    Card::create(CardRank::QUEEN, CardSuit::HEARTS),
+                    Card::create(CardRank::QUEEN, CardSuit::SPADES),
+                ],
+                [
+                    Card::create(CardRank::TWO, CardSuit::DIAMONDS),
+                    Card::create(CardRank::TWO, CardSuit::CLUBS),
+                    Card::create(CardRank::THREE, CardSuit::DIAMONDS),
+                    Card::create(CardRank::JACK, CardSuit::SPADES),
+                    Card::create(CardRank::QUEEN, CardSuit::HEARTS),
+                    Card::create(CardRank::QUEEN, CardSuit::SPADES),
+                    Card::create(CardRank::KING, CardSuit::DIAMONDS),
+                ],
+            ],
         ];
-
-        $pairsCards = Card::getPairsCardsRanks($cards);
-
-        self::assertSame(CardRank::FOUR, $pairsCards[0]);
-        self::assertSame(CardRank::FIVE, $pairsCards[1]);
-        self::assertSame(CardRank::JACK, $pairsCards[2]);
     }
 }

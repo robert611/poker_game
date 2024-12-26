@@ -6,6 +6,7 @@ namespace App\Model\Domain;
 
 use App\Model\Domain\Hand\HighestCard;
 use App\Model\Domain\Hand\Pair;
+use App\Model\Domain\Hand\TwoPairs;
 use App\Model\Domain\HandComparison\ThreeOfAKindHandComparison;
 
 enum Hand: int
@@ -50,7 +51,7 @@ enum Hand: int
             self::isRecognizedFlush($cards) => Hand::FLUSH,
             self::isRecognizedStraight($cards) => Hand::STRAIGHT,
             self::isRecognizedThreeOfAKind($cards) => Hand::THREE_OF_A_KIND,
-            self::isRecognizedTwoPairs($cards) => Hand::TWO_PAIRS,
+            TwoPairs::isRecognizedTwoPairs($cards) => Hand::TWO_PAIRS,
             Pair::isRecognizedOnePair($cards) => Hand::PAIR,
             default => Hand::HIGHEST_CARD,
         };
@@ -84,8 +85,8 @@ enum Hand: int
         }
 
         if ($firstHand === Hand::TWO_PAIRS) {
-            $firstHandPairsRanks = Card::getPairsCardsRanks($firstHandCards);
-            $secondHandPairsRanks = Card::getPairsCardsRanks($secondHandCards);
+            $firstHandPairsRanks = TwoPairs::getPairsCardsRanks($firstHandCards);
+            $secondHandPairsRanks = TwoPairs::getPairsCardsRanks($secondHandCards);
 
             $firstHandPairsRanks = CardRank::sortRanksFromBiggest($firstHandPairsRanks);
             $secondHandPairsRanks = CardRank::sortRanksFromBiggest($secondHandPairsRanks);
@@ -389,47 +390,6 @@ enum Hand: int
             if (count($rankCards) === 3) {
                 return true;
             }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Card[] $cards
-     */
-    public static function isRecognizedTwoPairs(array $cards): bool
-    {
-        $ranks = [
-            CardRank::ACE->value => [],
-            CardRank::KING->value => [],
-            CardRank::QUEEN->value => [],
-            CardRank::JACK->value => [],
-            CardRank::TEN->value => [],
-            CardRank::NINE->value => [],
-            CardRank::EIGHT->value => [],
-            CardRank::SEVEN->value => [],
-            CardRank::SIX->value => [],
-            CardRank::FIVE->value => [],
-            CardRank::FOUR->value => [],
-            CardRank::THREE->value => [],
-            CardRank::TWO->value => [],
-        ];
-
-        foreach ($cards as $card) {
-            $ranks[$card->getRank()->value][] = $card;
-        }
-
-        $ranksWithTwoCards = 0;
-
-        /** @var Card[] $rankCards */
-        foreach ($ranks as $rankCards) {
-            if (count($rankCards) === 2) {
-                $ranksWithTwoCards += 1;
-            }
-        }
-
-        if ($ranksWithTwoCards >= 2) {
-            return true;
         }
 
         return false;

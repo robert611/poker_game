@@ -54,40 +54,6 @@ class Card
         return $cards;
     }
 
-    /**
-     * Purpose of the function is to find all the cards that have pairs
-     * For instance two aces and two jacks would return an array comprised of an ace and a jack
-     * in ascending order
-     *
-     * @param Card[] $cards
-     *
-     * @return CardRank[]
-     */
-    public static function getPairsCardsRanks(array $cards): array
-    {
-        $pairsCards = [];
-
-        $cards = self::sortCardsFromLowest($cards);
-
-        foreach ($cards as $key => $card) {
-            if (false === isset($cards[$key + 1])) {
-                break;
-            }
-
-            $nextCard = $cards[$key + 1];
-
-            if ($card->getRank() === $nextCard->getRank()) {
-                $lastAddedRank = count($pairsCards) > 0 ? $pairsCards[count($pairsCards) - 1] : null;
-
-                if ($lastAddedRank !== $card->getRank()) {
-                    $pairsCards[] = $card->getRank();
-                }
-            }
-        }
-
-        return $pairsCards;
-    }
-
     public function getThreeOfAKindCardsRank(): CardRank
     {
         // Pytanie czy nie mogę reużyć funkcji Hand::isRecognizedThreeOfAKind

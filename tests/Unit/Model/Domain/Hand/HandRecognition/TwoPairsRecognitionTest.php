@@ -7,7 +7,7 @@ namespace App\Tests\Unit\Model\Domain\Hand\HandRecognition;
 use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
-use App\Model\Domain\Hand;
+use App\Model\Domain\Hand\TwoPairs;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +18,7 @@ class TwoPairsRecognitionTest extends TestCase
     #[DataProvider('twoPairsProvider')]
     public function canRecognizeTwoPairs(array $cards, bool $expectedResult): void
     {
-        $result = Hand::isRecognizedTwoPairs($cards);
+        $result = TwoPairs::isRecognizedTwoPairs($cards);
 
         self::assertSame($expectedResult, $result);
     }

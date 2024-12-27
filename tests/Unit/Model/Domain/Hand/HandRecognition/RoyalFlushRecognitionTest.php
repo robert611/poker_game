@@ -7,7 +7,7 @@ namespace App\Tests\Unit\Model\Domain\Hand\HandRecognition;
 use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
-use App\Model\Domain\Hand;
+use App\Model\Domain\Hand\RoyalFlush;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +18,7 @@ class RoyalFlushRecognitionTest extends TestCase
     #[DataProvider('royalFlushProvider')]
     public function canRecognizeRoyalFlush(array $cards, bool $expectedResult): void
     {
-        $result = Hand::isRecognizedRoyalFlush($cards);
+        $result = RoyalFlush::isRecognizedRoyalFlush($cards);
 
         self::assertSame($expectedResult, $result);
     }

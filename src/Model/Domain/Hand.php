@@ -9,6 +9,7 @@ use App\Model\Domain\Hand\FourOfAKind;
 use App\Model\Domain\Hand\FullHouse;
 use App\Model\Domain\Hand\HighestCard;
 use App\Model\Domain\Hand\Pair;
+use App\Model\Domain\Hand\RoyalFlush;
 use App\Model\Domain\Hand\Straight;
 use App\Model\Domain\Hand\StraightFlush;
 use App\Model\Domain\Hand\ThreeOfAKind;
@@ -50,7 +51,7 @@ enum Hand: int
     public static function recognizeHand(array $cards): Hand
     {
         return match (true) {
-            self::isRecognizedRoyalFlush($cards) => Hand::ROYAL_FLUSH,
+            RoyalFlush::isRecognizedRoyalFlush($cards) => Hand::ROYAL_FLUSH,
             StraightFlush::isRecognizedStraightFlush($cards) => Hand::STRAIGHT_FLUSH,
             FourOfAKind::isRecognizedFourOfAKind($cards) => Hand::FOUR_OF_A_KIND,
             FullHouse::isRecognizedFullHouse($cards) => Hand::FULL_HOUSE,
@@ -113,43 +114,5 @@ enum Hand: int
         }
 
         return 0;
-    }
-
-    /**
-     * @param Card[] $cards
-     */
-    public static function isRecognizedRoyalFlush(array $cards): bool
-    {
-        // To have a Royal Flush, you need an Ace, a King, a Queen, a Jack, and a 10. All the cards that compose
-        // the hand need to be of the same suit.
-
-        $royalRanks = [
-            CardRank::TEN,
-            CardRank::JACK,
-            CardRank::QUEEN,
-            CardRank::KING,
-            CardRank::ACE,
-        ];
-
-        $suits = [
-            CardSuit::HEARTS->value => [],
-            CardSuit::DIAMONDS->value => [],
-            CardSuit::CLUBS->value => [],
-            CardSuit::SPADES->value => [],
-        ];
-
-        foreach ($cards as $card) {
-            if (in_array($card->getRank(), $royalRanks)) {
-                $suits[$card->getSuit()->value][] = $card;
-            }
-        }
-
-        foreach ($suits as $suitCards) {
-            if (count($suitCards) === 5) {
-                return true; // There is five cards of the same color, including only royal flush ranks, we have a match
-            }
-        }
-
-        return false;
     }
 }

@@ -10,6 +10,7 @@ use App\Model\Domain\Hand\FullHouse;
 use App\Model\Domain\Hand\HighestCard;
 use App\Model\Domain\Hand\Pair;
 use App\Model\Domain\Hand\Straight;
+use App\Model\Domain\Hand\StraightFlush;
 use App\Model\Domain\Hand\ThreeOfAKind;
 use App\Model\Domain\Hand\TwoPairs;
 use App\Model\Domain\HandComparison\ThreeOfAKindHandComparison;
@@ -50,7 +51,7 @@ enum Hand: int
     {
         return match (true) {
             self::isRecognizedRoyalFlush($cards) => Hand::ROYAL_FLUSH,
-            self::isRecognizedStraightFlush($cards) => Hand::STRAIGHT_FLUSH,
+            StraightFlush::isRecognizedStraightFlush($cards) => Hand::STRAIGHT_FLUSH,
             FourOfAKind::isRecognizedFourOfAKind($cards) => Hand::FOUR_OF_A_KIND,
             FullHouse::isRecognizedFullHouse($cards) => Hand::FULL_HOUSE,
             Flush::isRecognizedFlush($cards) => Hand::FLUSH,
@@ -146,62 +147,6 @@ enum Hand: int
         foreach ($suits as $suitCards) {
             if (count($suitCards) === 5) {
                 return true; // There is five cards of the same color, including only royal flush ranks, we have a match
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Card[] $cards
-     */
-    public static function isRecognizedStraightFlush(array $cards): bool
-    {
-        // To have straight flush you need five cards in numerical order, all of identical suits.
-
-        $suits = [
-            CardSuit::HEARTS->value => [],
-            CardSuit::DIAMONDS->value => [],
-            CardSuit::CLUBS->value => [],
-            CardSuit::SPADES->value => [],
-        ];
-
-        foreach ($cards as $card) {
-            $suits[$card->getSuit()->value][] = $card;
-        }
-
-        foreach ($suits as $suitCards) {
-            if (count($suitCards) < 5) {
-                continue; // Must be at least five cards of the same suit
-            }
-
-            $suitCards = Card::sortCardsFromLowest($suitCards);
-
-            $cardsInOrder = 0;
-
-            foreach ($suitCards as $key => $currentSuitCard) {
-                if (false === isset($suitCards[$key - 1])) {
-                    $cardsInOrder = 1;
-                    continue;
-                }
-
-                $previousSuitCard = $suitCards[$key - 1];
-
-                $isRankOneBigger = CardRank::isRankOneBigger(
-                    $previousSuitCard->getRank(),
-                    $currentSuitCard->getRank(),
-                );
-
-                if ($isRankOneBigger) {
-                    $cardsInOrder += 1;
-                    continue;
-                }
-
-                $cardsInOrder = 0;
-            }
-
-            if ($cardsInOrder >= 5) {
-                return true;
             }
         }
 

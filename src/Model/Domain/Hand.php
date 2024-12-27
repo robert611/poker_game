@@ -6,6 +6,7 @@ namespace App\Model\Domain;
 
 use App\Model\Domain\Hand\HighestCard;
 use App\Model\Domain\Hand\Pair;
+use App\Model\Domain\Hand\Straight;
 use App\Model\Domain\Hand\ThreeOfAKind;
 use App\Model\Domain\Hand\TwoPairs;
 use App\Model\Domain\HandComparison\ThreeOfAKindHandComparison;
@@ -50,7 +51,7 @@ enum Hand: int
             self::isRecognizedFourOfAKind($cards) => Hand::FOUR_OF_A_KIND,
             self::isRecognizedFullHouse($cards) => Hand::FULL_HOUSE,
             self::isRecognizedFlush($cards) => Hand::FLUSH,
-            self::isRecognizedStraight($cards) => Hand::STRAIGHT,
+            Straight::isRecognizedStraight($cards) => Hand::STRAIGHT,
             ThreeOfAKind::isRecognizedThreeOfAKind($cards) => Hand::THREE_OF_A_KIND,
             TwoPairs::isRecognizedTwoPairs($cards) => Hand::TWO_PAIRS,
             Pair::isRecognizedOnePair($cards) => Hand::PAIR,
@@ -308,54 +309,6 @@ enum Hand: int
             if (count($suitCards) >= 5) {
                 return true;
             }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Card[] $cards
-     */
-    public static function isRecognizedStraight(array $cards): bool
-    {
-        // A straight in Hold 'Em is the same as a straight in other poker games:
-        // five cards, of more than one suit, in sequence (e.g., 5,6,7,8,9)
-
-        $cards = Card::sortCardsFromLowest($cards);
-
-        $cardsInOrder = 0;
-
-        foreach ($cards as $key => $card) {
-            if (false === isset($cards[$key - 1])) {
-                $cardsInOrder = 1;
-                continue;
-            }
-
-            $previousSuitCard = $cards[$key - 1];
-
-            if (CardRank::isRankTheSame($previousSuitCard->getRank(), $card->getRank())) {
-                continue;
-            }
-
-            $isRankOneBigger = CardRank::isRankOneBigger(
-                $previousSuitCard->getRank(),
-                $card->getRank(),
-            );
-
-            if ($isRankOneBigger) {
-                $cardsInOrder += 1;
-                continue;
-            }
-
-            if ($cardsInOrder >= 5) {
-                return true; // Do not go further as it's not necessary and could cause $cardInOrder to be reset
-            }
-
-            $cardsInOrder = 0;
-        }
-
-        if ($cardsInOrder >= 5) {
-            return true;
         }
 
         return false;

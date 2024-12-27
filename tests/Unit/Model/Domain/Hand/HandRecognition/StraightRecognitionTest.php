@@ -7,7 +7,7 @@ namespace App\Tests\Unit\Model\Domain\Hand\HandRecognition;
 use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
-use App\Model\Domain\Hand;
+use App\Model\Domain\Hand\Straight;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +18,7 @@ class StraightRecognitionTest extends TestCase
     #[DataProvider('straightProvider')]
     public function canRecognizeStraight(array $cards, bool $expectedResult): void
     {
-        $result = Hand::isRecognizedStraight($cards);
+        $result = Straight::isRecognizedStraight($cards);
 
         self::assertSame($expectedResult, $result);
     }

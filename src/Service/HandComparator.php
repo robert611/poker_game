@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Model\Domain\Hand;
+use App\Model\Domain\HandComparison\HandComparisonInterface;
 use App\Model\GameResult;
 use App\Model\UserCards;
 use App\Model\UserResult;
@@ -19,7 +22,7 @@ class HandComparator
         usort($usersCards, function (UserCards $a, UserCards $b) use (&$draws) {
             $comparison = Hand::compareHands($b->getHand(), $b->getCards(), $a->getHand(), $a->getCards());
 
-            if ($comparison === 0) {
+            if (HandComparisonInterface::DRAW === $comparison) {
                 $draws[] = [$a->getUserId(), $b->getUserId()];
             }
 

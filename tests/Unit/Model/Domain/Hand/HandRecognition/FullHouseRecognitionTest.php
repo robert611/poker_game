@@ -7,7 +7,7 @@ namespace App\Tests\Unit\Model\Domain\Hand\HandRecognition;
 use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
-use App\Model\Domain\Hand;
+use App\Model\Domain\Hand\FullHouse;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +18,7 @@ class FullHouseRecognitionTest extends TestCase
     #[DataProvider('fullHouseProvider')]
     public function canRecognizeFullHouse(array $cards, bool $expectedResult): void
     {
-        $result = Hand::isRecognizedFullHouse($cards);
+        $result = FullHouse::isRecognizedFullHouse($cards);
 
         self::assertSame($expectedResult, $result);
     }

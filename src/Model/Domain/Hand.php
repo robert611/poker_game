@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Domain;
 
+use App\Model\Domain\Hand\Flush;
 use App\Model\Domain\Hand\HighestCard;
 use App\Model\Domain\Hand\Pair;
 use App\Model\Domain\Hand\Straight;
@@ -50,7 +51,7 @@ enum Hand: int
             self::isRecognizedStraightFlush($cards) => Hand::STRAIGHT_FLUSH,
             self::isRecognizedFourOfAKind($cards) => Hand::FOUR_OF_A_KIND,
             self::isRecognizedFullHouse($cards) => Hand::FULL_HOUSE,
-            self::isRecognizedFlush($cards) => Hand::FLUSH,
+            Flush::isRecognizedFlush($cards) => Hand::FLUSH,
             Straight::isRecognizedStraight($cards) => Hand::STRAIGHT,
             ThreeOfAKind::isRecognizedThreeOfAKind($cards) => Hand::THREE_OF_A_KIND,
             TwoPairs::isRecognizedTwoPairs($cards) => Hand::TWO_PAIRS,
@@ -281,34 +282,6 @@ enum Hand: int
 
         if ($threeCards && $pair) {
             return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Card[] $cards
-     */
-    public static function isRecognizedFlush(array $cards): bool
-    {
-        // A flush is a hand that contains five cards of the same suit,
-        // not all of sequential rank
-
-        $suits = [
-            CardSuit::HEARTS->value => [],
-            CardSuit::DIAMONDS->value => [],
-            CardSuit::CLUBS->value => [],
-            CardSuit::SPADES->value => [],
-        ];
-
-        foreach ($cards as $card) {
-            $suits[$card->getSuit()->value][] = $card;
-        }
-
-        foreach ($suits as $suitCards) {
-            if (count($suitCards) >= 5) {
-                return true;
-            }
         }
 
         return false;

@@ -6,6 +6,10 @@ namespace App\Model\Domain\HandComparison;
 
 interface HandComparisonInterface
 {
+    public const FIRST_PLAYER_WINS = 1;
+    public const DRAW = 0;
+    public const SECOND_PLAYER_WINS = -1;
+
     /**
      * Compares with each other two hands of the same type, for instance two hands of Highest Card
      * Function returns int

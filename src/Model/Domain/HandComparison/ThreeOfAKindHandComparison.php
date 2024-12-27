@@ -4,19 +4,43 @@ declare(strict_types=1);
 
 namespace App\Model\Domain\HandComparison;
 
+use App\Model\Domain\Card;
+use App\Model\Domain\Hand\ThreeOfAKind;
+
 class ThreeOfAKindHandComparison implements HandComparisonInterface
 {
     public static function compare(array $firstPlayerCards, array $secondPlayerCards): int
     {
-        // Zgodnie z założeniami, najpierw porównuje trzy karty składające się na trójkę, większa wygrywa
-        // Jeśli trójki są takie same to porównuje "kickers" czyli pozostałe karty, musze je posegregować od największej do najmniejzej
-        // Bo zaczynam porównywać od największej i aż któraś wygra.
+        $firstPlayerRank = ThreeOfAKind::getThreeOfAKindCardsRank($firstPlayerCards);
+        $secondPlayerRank = ThreeOfAKind::getThreeOfAKindCardsRank($secondPlayerCards);
 
-        // Czyli najpierw rozdziel trójkę i pozostałe karty.
-        // Super? Ale jak to zrobić?
+        if ($firstPlayerRank !== $secondPlayerRank) {
+            if ($firstPlayerRank->getStrength() > $secondPlayerRank->getStrength()) {
+                return self::FIRST_PLAYER_WINS;
+            }
 
+            return self::SECOND_PLAYER_WINS;
+        }
 
+        // Now, must compare rest of the cards
+        $firstPlayerLeftOverCards = Card::sortCardsFromTheHighest(ThreeOfAKind::getLeftOverCards($firstPlayerCards));
+        $secondPlayerLeftOverCards = Card::sortCardsFromTheHighest(ThreeOfAKind::getLeftOverCards($secondPlayerCards));
 
-        return 0;
+        for ($i = 0; $i < count($firstPlayerLeftOverCards); $i++) {
+            if (false === isset($secondPlayerLeftOverCards[$i])) {
+                return self::FIRST_PLAYER_WINS;
+            }
+
+            $firstPlayerCartStrength = $firstPlayerLeftOverCards[$i]->getRank()->getStrength();
+            $secondPlayerCartStrength = $secondPlayerLeftOverCards[$i]->getRank()->getStrength();
+
+            if ($firstPlayerCartStrength > $secondPlayerCartStrength) {
+                return self::FIRST_PLAYER_WINS;
+            } else if ($firstPlayerCartStrength < $secondPlayerCartStrength) {
+                return self::SECOND_PLAYER_WINS;
+            }
+        }
+
+        return self::DRAW;
     }
 }

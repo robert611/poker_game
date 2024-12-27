@@ -8,6 +8,7 @@ use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
 use App\Model\Domain\Hand;
+use App\Model\Domain\HandComparison\HandComparisonInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -53,7 +54,7 @@ class ThreeOfAKindHandComparisonTest extends TestCase
                     Card::create(CardRank::FIVE, CardSuit::HEARTS),
                     Card::create(CardRank::FIVE, CardSuit::CLUBS),
                 ],
-                -1,
+                HandComparisonInterface::SECOND_PLAYER_WINS,
             ],
             [ // Case with the same trio but different "kickers"
                 Hand::THREE_OF_A_KIND,
@@ -72,7 +73,7 @@ class ThreeOfAKindHandComparisonTest extends TestCase
                     Card::create(CardRank::SIX, CardSuit::CLUBS),
                     Card::create(CardRank::NINE, CardSuit::CLUBS),
                 ],
-                -1,
+                HandComparisonInterface::SECOND_PLAYER_WINS,
             ],
             [
                 Hand::THREE_OF_A_KIND,
@@ -91,7 +92,7 @@ class ThreeOfAKindHandComparisonTest extends TestCase
                     Card::create(CardRank::FIVE, CardSuit::CLUBS),
                     Card::create(CardRank::TEN, CardSuit::HEARTS),
                 ],
-                0,
+                HandComparisonInterface::DRAW,
             ],
             [
                 Hand::THREE_OF_A_KIND,
@@ -108,7 +109,7 @@ class ThreeOfAKindHandComparisonTest extends TestCase
                     Card::create(CardRank::THREE, CardSuit::SPADES),
                     Card::create(CardRank::TEN, CardSuit::CLUBS),
                 ],
-                1,
+                HandComparisonInterface::FIRST_PLAYER_WINS,
             ],
             [ // Case with the same trio but different "kickers"
                 Hand::THREE_OF_A_KIND,
@@ -117,7 +118,8 @@ class ThreeOfAKindHandComparisonTest extends TestCase
                     Card::create(CardRank::ACE, CardSuit::SPADES),
                     Card::create(CardRank::ACE, CardSuit::DIAMONDS),
                     Card::create(CardRank::JACK, CardSuit::SPADES),
-                    Card::create(CardRank::TWO, CardSuit::SPADES),
+                    Card::create(CardRank::THREE, CardSuit::SPADES),
+                    Card::create(CardRank::FOUR, CardSuit::SPADES),
                 ],
                 Hand::THREE_OF_A_KIND,
                 [
@@ -125,9 +127,10 @@ class ThreeOfAKindHandComparisonTest extends TestCase
                     Card::create(CardRank::ACE, CardSuit::CLUBS),
                     Card::create(CardRank::ACE, CardSuit::SPADES),
                     Card::create(CardRank::FOUR, CardSuit::CLUBS),
-                    Card::create(CardRank::THREE, CardSuit::CLUBS),
+                    Card::create(CardRank::TWO, CardSuit::CLUBS),
+                    Card::create(CardRank::JACK, CardSuit::CLUBS),
                 ],
-                1,
+                HandComparisonInterface::FIRST_PLAYER_WINS,
             ],
         ];
     }

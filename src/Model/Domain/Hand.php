@@ -6,6 +6,7 @@ namespace App\Model\Domain;
 
 use App\Model\Domain\Hand\HighestCard;
 use App\Model\Domain\Hand\Pair;
+use App\Model\Domain\Hand\ThreeOfAKind;
 use App\Model\Domain\Hand\TwoPairs;
 use App\Model\Domain\HandComparison\ThreeOfAKindHandComparison;
 
@@ -50,7 +51,7 @@ enum Hand: int
             self::isRecognizedFullHouse($cards) => Hand::FULL_HOUSE,
             self::isRecognizedFlush($cards) => Hand::FLUSH,
             self::isRecognizedStraight($cards) => Hand::STRAIGHT,
-            self::isRecognizedThreeOfAKind($cards) => Hand::THREE_OF_A_KIND,
+            ThreeOfAKind::isRecognizedThreeOfAKind($cards) => Hand::THREE_OF_A_KIND,
             TwoPairs::isRecognizedTwoPairs($cards) => Hand::TWO_PAIRS,
             Pair::isRecognizedOnePair($cards) => Hand::PAIR,
             default => Hand::HIGHEST_CARD,
@@ -355,41 +356,6 @@ enum Hand: int
 
         if ($cardsInOrder >= 5) {
             return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Card[] $cards
-     */
-    public static function isRecognizedThreeOfAKind(array $cards): bool
-    {
-        $ranks = [
-            CardRank::ACE->value => [],
-            CardRank::KING->value => [],
-            CardRank::QUEEN->value => [],
-            CardRank::JACK->value => [],
-            CardRank::TEN->value => [],
-            CardRank::NINE->value => [],
-            CardRank::EIGHT->value => [],
-            CardRank::SEVEN->value => [],
-            CardRank::SIX->value => [],
-            CardRank::FIVE->value => [],
-            CardRank::FOUR->value => [],
-            CardRank::THREE->value => [],
-            CardRank::TWO->value => [],
-        ];
-
-        foreach ($cards as $card) {
-            $ranks[$card->getRank()->value][] = $card;
-        }
-
-        /** @var Card[] $rankCards */
-        foreach ($ranks as $rankCards) {
-            if (count($rankCards) === 3) {
-                return true;
-            }
         }
 
         return false;

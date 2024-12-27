@@ -54,14 +54,18 @@ class Card
         return $cards;
     }
 
-    public function getThreeOfAKindCardsRank(): CardRank
+    /**
+     * @param Card[] $cards
+     *
+     * @return Card[]
+     */
+    public static function sortCardsFromTheHighest(array $cards): array
     {
-        // Pytanie czy nie mogę reużyć funkcji Hand::isRecognizedThreeOfAKind
-        // Ona zasadniczo wykrywa trójki i wie jakie karty je tworzą ale później inaczej manipuluje taki wynik
-        // Może trzeba stworzyć w folderze Model\Domain klasy dla każdego układu i tam trzymać funkcje, które obecnie
-        // trzymam w Card.php i Hand.php
-        // Wymagałoby to ich przeniesienia oraz przeniesienia testów
-        // Pytanie czy warto to tak zrobić?
+        // Original array given in an argument will not be sorted as it's clone not the pointer is passed
+
+        usort($cards, fn(Card $a, Card $b) => $b->getRank()->getStrength() <=> $a->getRank()->getStrength());
+
+        return $cards;
     }
 
     public static function isOfTheSameSuit(Card $a, Card $b): bool

@@ -22,6 +22,17 @@ class CardTest extends TestCase
         self::assertEquals($sortedCards, Card::sortCardsFromLowest($cards));
     }
 
+    /**
+     * @param Card[] $cards
+     * @param Card[] $sortedCards
+     */
+    #[DataProvider('sortCardsFromHighestProvider')]
+    public function testSortCardsFromHighest(array $cards, array $sortedCards): void
+    {
+        self::assertEquals($sortedCards, Card::sortCardsFromTheHighest($cards));
+    }
+
+
     public static function sortCardsFromLowestProvider(): array
     {
         return [
@@ -57,6 +68,40 @@ class CardTest extends TestCase
                     Card::create(CardRank::QUEEN, CardSuit::HEARTS),
                     Card::create(CardRank::QUEEN, CardSuit::SPADES),
                     Card::create(CardRank::KING, CardSuit::DIAMONDS),
+                ],
+            ],
+        ];
+    }
+
+    public static function sortCardsFromHighestProvider(): array
+    {
+        return [
+            [
+                [
+                    Card::create(CardRank::TWO, CardSuit::CLUBS),
+                    Card::create(CardRank::QUEEN, CardSuit::SPADES),
+                ],
+                [
+                    Card::create(CardRank::QUEEN, CardSuit::SPADES),
+                    Card::create(CardRank::TWO, CardSuit::CLUBS),
+                ],
+            ],
+            [
+                [
+                    Card::create(CardRank::THREE, CardSuit::CLUBS),
+                    Card::create(CardRank::TWO, CardSuit::DIAMONDS),
+                    Card::create(CardRank::TEN, CardSuit::DIAMONDS),
+                    Card::create(CardRank::JACK, CardSuit::HEARTS),
+                    Card::create(CardRank::TWO, CardSuit::CLUBS),
+                    Card::create(CardRank::QUEEN, CardSuit::SPADES),
+                ],
+                [
+                    Card::create(CardRank::QUEEN, CardSuit::SPADES),
+                    Card::create(CardRank::JACK, CardSuit::HEARTS),
+                    Card::create(CardRank::TEN, CardSuit::DIAMONDS),
+                    Card::create(CardRank::THREE, CardSuit::CLUBS),
+                    Card::create(CardRank::TWO, CardSuit::DIAMONDS),
+                    Card::create(CardRank::TWO, CardSuit::CLUBS),
                 ],
             ],
         ];

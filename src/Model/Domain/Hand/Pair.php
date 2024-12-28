@@ -11,10 +11,11 @@ class Pair
 {
     /**
      * @param Card[] $cards
+     * @return array<int, Card[]>
      */
-    public static function isRecognizedOnePair(array $cards): bool
+    public static function getRanksWithTheirCards(array $cards): array
     {
-        $ranks = [
+        $ranksCards = [
             CardRank::ACE->value => [],
             CardRank::KING->value => [],
             CardRank::QUEEN->value => [],
@@ -31,16 +32,74 @@ class Pair
         ];
 
         foreach ($cards as $card) {
-            $ranks[$card->getRank()->value][] = $card;
+            $ranksCards[$card->getRank()->value][] = $card;
         }
 
+        return $ranksCards;
+    }
+
+    /**
+     * @param Card[] $cards
+     */
+    public static function isRecognizedOnePair(array $cards): bool
+    {
+        $ranksCards = self::getRanksWithTheirCards($cards);
+
         /** @var Card[] $rankCards */
-        foreach ($ranks as $rankCards) {
+        foreach ($ranksCards as $rankCards) {
             if (count($rankCards) === 2) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * @param Card[] $cards
+     */
+    public static function getOnePairCardsRank(array $cards): ?CardRank
+    {
+        $ranksCards = self::getRanksWithTheirCards($cards);
+
+        /** @var Card[] $rankCards */
+        foreach ($ranksCards as $rankCards) {
+            if (count($rankCards) === 2) {
+                return $rankCards[array_key_first($rankCards)]->getRank();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param Card[] $cards
+     * @return Card[]
+     */
+    public static function getLeftOverCards(array $cards): array
+    {
+        $ranksCards = self::getRanksWithTheirCards($cards);
+
+        $leftOverCards = [];
+
+        /** @var Card[] $rankCards */
+        foreach ($ranksCards as $rankCards) {
+            if (count($rankCards) !== 2) {
+                $leftOverCards = array_merge($leftOverCards, $rankCards);
+            }
+        }
+
+        $result = [];
+
+        // Keep the original cards order in result array
+        foreach ($cards as $card) {
+            foreach ($leftOverCards as $leftOverCard) {
+                if ($card === $leftOverCard) {
+                    $result[] = $leftOverCard;
+                }
+            }
+        }
+
+        return $result;
     }
 }

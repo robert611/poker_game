@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Domain\HandComparison;
 
+use App\Model\Domain\Card;
+
 interface HandComparisonInterface
 {
     public const FIRST_PLAYER_WINS = 1;
@@ -16,6 +18,9 @@ interface HandComparisonInterface
      * -1 if $firstPlayerCards are weaker than $secondPlayerCards
      *  0 if they are equal
      *  1 if $firstPlayerCards are stronger than $secondPlayerCards
+     *
+     * @param Card[] $firstPlayerCards
+     * @param Card[] $secondPlayerCards
      */
     public static function compare(array $firstPlayerCards, array $secondPlayerCards): int;
 }

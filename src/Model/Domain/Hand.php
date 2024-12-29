@@ -15,7 +15,9 @@ use App\Model\Domain\Hand\StraightFlush;
 use App\Model\Domain\Hand\ThreeOfAKind;
 use App\Model\Domain\Hand\TwoPairs;
 use App\Model\Domain\HandComparison\OnePairHandComparison;
+use App\Model\Domain\HandComparison\StraightHandComparison;
 use App\Model\Domain\HandComparison\ThreeOfAKindHandComparison;
+use App\Model\Domain\HandComparison\TwoPairsHandComparison;
 
 enum Hand: int
 {
@@ -93,27 +95,46 @@ enum Hand: int
         }
 
         if ($firstHand === Hand::TWO_PAIRS) {
-            $firstHandPairsRanks = TwoPairs::getPairsCardsRanks($firstHandCards);
-            $secondHandPairsRanks = TwoPairs::getPairsCardsRanks($secondHandCards);
-
-            $firstHandPairsRanks = CardRank::sortRanksFromBiggest($firstHandPairsRanks);
-            $secondHandPairsRanks = CardRank::sortRanksFromBiggest($secondHandPairsRanks);
-
-            if ($firstHandPairsRanks[0] !== $secondHandPairsRanks[0]) {
-                return $firstHandPairsRanks[0]->getStrength() <=> $secondHandPairsRanks[0]->getStrength();
-            }
-
-            if ($firstHandPairsRanks[1] !== $secondHandPairsRanks[1]) {
-                return $firstHandPairsRanks[1]->getStrength() <=> $secondHandPairsRanks[1]->getStrength();
-            }
-
-            return 0;
+            return TwoPairsHandComparison::compare($firstHandCards, $secondHandCards);
         }
 
         if ($firstHand === Hand::THREE_OF_A_KIND) {
             return ThreeOfAKindHandComparison::compare($firstHandCards, $secondHandCards);
         }
 
+        if ($firstHand === Hand::STRAIGHT) {
+            return StraightHandComparison::compare($firstHandCards, $secondHandCards);
+        }
+
         return 0;
+    }
+
+    /**
+     * @param Card[] $cards
+     * @return array<int, Card[]>
+     */
+    public static function getRanksWithTheirCards(array $cards): array
+    {
+        $ranksCards = [
+            CardRank::ACE->value => [],
+            CardRank::KING->value => [],
+            CardRank::QUEEN->value => [],
+            CardRank::JACK->value => [],
+            CardRank::TEN->value => [],
+            CardRank::NINE->value => [],
+            CardRank::EIGHT->value => [],
+            CardRank::SEVEN->value => [],
+            CardRank::SIX->value => [],
+            CardRank::FIVE->value => [],
+            CardRank::FOUR->value => [],
+            CardRank::THREE->value => [],
+            CardRank::TWO->value => [],
+        ];
+
+        foreach ($cards as $card) {
+            $ranksCards[$card->getRank()->value][] = $card;
+        }
+
+        return $ranksCards;
     }
 }

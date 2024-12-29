@@ -6,6 +6,7 @@ namespace App\Model\Domain\Hand;
 
 use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
+use App\Model\Domain\Hand;
 
 class TwoPairs
 {
@@ -14,25 +15,7 @@ class TwoPairs
      */
     public static function isRecognizedTwoPairs(array $cards): bool
     {
-        $ranks = [
-            CardRank::ACE->value => [],
-            CardRank::KING->value => [],
-            CardRank::QUEEN->value => [],
-            CardRank::JACK->value => [],
-            CardRank::TEN->value => [],
-            CardRank::NINE->value => [],
-            CardRank::EIGHT->value => [],
-            CardRank::SEVEN->value => [],
-            CardRank::SIX->value => [],
-            CardRank::FIVE->value => [],
-            CardRank::FOUR->value => [],
-            CardRank::THREE->value => [],
-            CardRank::TWO->value => [],
-        ];
-
-        foreach ($cards as $card) {
-            $ranks[$card->getRank()->value][] = $card;
-        }
+        $ranks = Hand::getRanksWithTheirCards($cards);
 
         $ranksWithTwoCards = 0;
 
@@ -82,5 +65,49 @@ class TwoPairs
         }
 
         return $pairsCards;
+    }
+
+    /**
+     * @param Card[] $cards
+     * @return Card[]
+     */
+    public static function getLeftOverCards(array $cards): array
+    {
+        $pairsCardsRanks = self::getPairsCardsRanks($cards);
+        $pairsCardsRanks = CardRank::sortRanksFromBiggest($pairsCardsRanks);
+
+        // In texas hold'em there are 7 cards, so it's possible to have 3 pairs, but only two strongest pairs are
+        // taken into account, so I remove third pair if there is one and treat it as leftover cards
+        if (count($pairsCardsRanks) > 2) {
+            unset($pairsCardsRanks[array_key_last($pairsCardsRanks)]);
+        }
+
+        $ranksCards = Hand::getRanksWithTheirCards($cards);
+
+        $leftOverCards = [];
+
+        /** @var Card[] $rankCards */
+        foreach ($ranksCards as $rankCards) {
+            if (0 === count($rankCards)) {
+                continue;
+            }
+
+            if (false === in_array($rankCards[0]->getRank(), $pairsCardsRanks)) {
+                $leftOverCards = array_merge($leftOverCards, $rankCards);
+            }
+        }
+
+        $result = [];
+
+        // Keep the original cards order in result array
+        foreach ($cards as $card) {
+            foreach ($leftOverCards as $leftOverCard) {
+                if ($card === $leftOverCard) {
+                    $result[] = $leftOverCard;
+                }
+            }
+        }
+
+        return $result;
     }
 }

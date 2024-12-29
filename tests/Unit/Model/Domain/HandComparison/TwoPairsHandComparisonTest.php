@@ -8,6 +8,7 @@ use App\Model\Domain\Card;
 use App\Model\Domain\CardRank;
 use App\Model\Domain\CardSuit;
 use App\Model\Domain\Hand;
+use App\Model\Domain\HandComparison\HandComparisonInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -83,6 +84,29 @@ class TwoPairsHandComparisonTest extends TestCase
                     Card::create(CardRank::FIVE, CardSuit::DIAMONDS),
                 ],
                 1,
+            ],
+            [
+                Hand::TWO_PAIRS,
+                [
+                    Card::create(CardRank::FOUR, CardSuit::HEARTS),
+                    Card::create(CardRank::SEVEN, CardSuit::HEARTS),
+                    Card::create(CardRank::EIGHT, CardSuit::HEARTS),
+                    Card::create(CardRank::QUEEN, CardSuit::HEARTS),
+                    Card::create(CardRank::SEVEN, CardSuit::SPADES),
+                    Card::create(CardRank::QUEEN, CardSuit::CLUBS),
+                    Card::create(CardRank::FOUR, CardSuit::CLUBS),
+                ],
+                Hand::TWO_PAIRS,
+                [
+                    Card::create(CardRank::FOUR, CardSuit::HEARTS),
+                    Card::create(CardRank::SEVEN, CardSuit::HEARTS),
+                    Card::create(CardRank::EIGHT, CardSuit::HEARTS),
+                    Card::create(CardRank::QUEEN, CardSuit::SPADES),
+                    Card::create(CardRank::SEVEN, CardSuit::SPADES),
+                    Card::create(CardRank::QUEEN, CardSuit::DIAMONDS),
+                    Card::create(CardRank::THREE, CardSuit::DIAMONDS),
+                ],
+                HandComparisonInterface::FIRST_PLAYER_WINS,
             ],
         ];
     }

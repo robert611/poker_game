@@ -14,6 +14,7 @@ use App\Model\Domain\Hand\Straight;
 use App\Model\Domain\Hand\StraightFlush;
 use App\Model\Domain\Hand\ThreeOfAKind;
 use App\Model\Domain\Hand\TwoPairs;
+use App\Model\Domain\HandComparison\FlushHandComparison;
 use App\Model\Domain\HandComparison\OnePairHandComparison;
 use App\Model\Domain\HandComparison\StraightHandComparison;
 use App\Model\Domain\HandComparison\ThreeOfAKindHandComparison;
@@ -103,7 +104,11 @@ enum Hand: int
         }
 
         if ($firstHand === Hand::STRAIGHT) {
-            return StraightHandComparison::compare($firstHandCards, $secondHandCards);
+            return 0;
+        }
+
+        if ($firstHand === Hand::FLUSH) {
+            return FlushHandComparison::compare($firstHandCards, $secondHandCards);
         }
 
         return 0;

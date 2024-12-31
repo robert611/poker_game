@@ -11,19 +11,17 @@ class Straight
 {
     /**
      * @param Card[] $cards
+     * @return Card[]
      */
-    public static function isRecognizedStraight(array $cards): bool
+    public static function getLongestSequenceOfCards(array $cards): array
     {
-        // A straight in Hold 'Em is the same as a straight in other poker games:
-        // five cards, of more than one suit, in sequence (e.g., 5,6,7,8,9)
+        $cards = Card::sortCardsFromTheHighest($cards);
 
-        $cards = Card::sortCardsFromLowest($cards);
-
-        $cardsInOrder = 0;
+        $sequences = [[]];
 
         foreach ($cards as $key => $card) {
             if (false === isset($cards[$key - 1])) {
-                $cardsInOrder = 1;
+                $sequences[array_key_last($sequences)][] = $card;
                 continue;
             }
 
@@ -33,24 +31,43 @@ class Straight
                 continue;
             }
 
-            $isRankOneBigger = CardRank::isRankOneBigger(
+            $isRankOneSmaller = CardRank::isRankOneSmaller(
                 $previousSuitCard->getRank(),
                 $card->getRank(),
             );
 
-            if ($isRankOneBigger) {
-                $cardsInOrder += 1;
+            if ($isRankOneSmaller) {
+                $sequences[array_key_last($sequences)][] = $card;
                 continue;
             }
 
-            if ($cardsInOrder >= 5) {
-                return true; // Do not go further as it's not necessary and could cause $cardInOrder to be reset
-            }
-
-            $cardsInOrder = 0;
+            $sequences[] = [$card];
         }
 
-        if ($cardsInOrder >= 5) {
+        $longestSequence = [];
+
+        // Extract the longest sequence
+        // Note that sequences are sorted from one with the highest cards
+        foreach ($sequences as $sequence) {
+            if (count($sequence) > count($longestSequence)) {
+                $longestSequence = $sequence;
+            }
+        }
+
+        return $longestSequence;
+    }
+
+    /**
+     * @param Card[] $cards
+     */
+    public static function isRecognizedStraight(array $cards): bool
+    {
+        // A straight in Hold 'Em is the same as a straight in other poker games:
+        // five cards, of more than one suit, in sequence (e.g., 5,6,7,8,9)
+
+        $longestSequence = self::getLongestSequenceOfCards($cards);
+
+        if (count($longestSequence) >= 5) {
             return true;
         }
 

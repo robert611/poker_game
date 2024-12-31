@@ -67,6 +67,15 @@ enum CardRank: string
         return false;
     }
 
+    public static function isRankOneSmaller(CardRank $firstRank, CardRank $secondRank): bool
+    {
+        if ($secondRank->getStrength() === $firstRank->getStrength() - 1) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static function isRankTheSame(CardRank $firstRank, CardRank $secondRank): bool
     {
         if ($secondRank->getStrength() === $firstRank->getStrength()) {

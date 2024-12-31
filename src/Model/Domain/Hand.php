@@ -104,7 +104,7 @@ enum Hand: int
         }
 
         if ($firstHand === Hand::STRAIGHT) {
-            return 0;
+            return StraightHandComparison::compare($firstHandCards, $secondHandCards);
         }
 
         if ($firstHand === Hand::FLUSH) {

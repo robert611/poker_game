@@ -45,12 +45,12 @@ class StraightFlush
 
                 $previousSuitCard = $suitCards[$key - 1];
 
-                $isRankOneBigger = CardRank::isRankOneSmaller(
+                $isRankOneSmaller = CardRank::isRankOneSmaller(
                     $previousSuitCard->getRank(),
                     $currentSuitCard->getRank(),
                 );
 
-                if ($isRankOneBigger) {
+                if ($isRankOneSmaller) {
                     $cardsInOrder += 1;
 
                     if ($cardsInOrder === 5) {

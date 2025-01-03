@@ -12,6 +12,62 @@ class StraightFlush
 {
     /**
      * @param Card[] $cards
+     * @return Card[]
+     */
+    public static function getCardsComprisingStraightFlush(array $cards): array
+    {
+        $suits = [
+            CardSuit::HEARTS->value => [],
+            CardSuit::DIAMONDS->value => [],
+            CardSuit::CLUBS->value => [],
+            CardSuit::SPADES->value => [],
+        ];
+
+        foreach ($cards as $card) {
+            $suits[$card->getSuit()->value][] = $card;
+        }
+
+        foreach ($suits as $suitCards) {
+            if (count($suitCards) < 5) {
+                continue; // Must be at least five cards of the same suit
+            }
+
+            $suitCards = Card::sortCardsFromTheHighest($suitCards);
+
+            $cardsInOrder = 0;
+
+            foreach ($suitCards as $key => $currentSuitCard) {
+                if (false === isset($suitCards[$key - 1])) {
+                    $cardsInOrder = 1;
+                    continue;
+                }
+
+                $previousSuitCard = $suitCards[$key - 1];
+
+                $isRankOneSmaller = CardRank::isRankOneSmaller(
+                    $previousSuitCard->getRank(),
+                    $currentSuitCard->getRank(),
+                );
+
+                if ($isRankOneSmaller) {
+                    $cardsInOrder += 1;
+
+                    if ($cardsInOrder >= 5) {
+                        return array_slice($suitCards, ($key - 4), 5);
+                    }
+
+                    continue;
+                }
+
+                $cardsInOrder = 0;
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * @param Card[] $cards
      */
     public static function isRecognizedStraightFlush(array $cards): bool
     {

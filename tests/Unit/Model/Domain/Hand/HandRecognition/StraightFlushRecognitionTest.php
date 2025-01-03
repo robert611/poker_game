@@ -40,6 +40,18 @@ class StraightFlushRecognitionTest extends TestCase
             ],
             [
                 [
+                    Card::create(CardRank::KING, CardSuit::DIAMONDS),
+                    Card::create(CardRank::QUEEN, CardSuit::DIAMONDS),
+                    Card::create(CardRank::JACK, CardSuit::DIAMONDS),
+                    Card::create(CardRank::TEN, CardSuit::DIAMONDS),
+                    Card::create(CardRank::NINE, CardSuit::DIAMONDS),
+                    Card::create(CardRank::SEVEN, CardSuit::DIAMONDS),
+                    Card::create(CardRank::SIX, CardSuit::DIAMONDS),
+                ],
+                true,
+            ],
+            [
+                [
                     Card::create(CardRank::TEN, CardSuit::HEARTS),
                     Card::create(CardRank::SIX, CardSuit::SPADES),
                     Card::create(CardRank::JACK, CardSuit::CLUBS),

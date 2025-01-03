@@ -33,7 +33,7 @@ class StraightFlush
                 continue; // Must be at least five cards of the same suit
             }
 
-            $suitCards = Card::sortCardsFromLowest($suitCards);
+            $suitCards = Card::sortCardsFromTheHighest($suitCards);
 
             $cardsInOrder = 0;
 
@@ -45,21 +45,22 @@ class StraightFlush
 
                 $previousSuitCard = $suitCards[$key - 1];
 
-                $isRankOneBigger = CardRank::isRankOneBigger(
+                $isRankOneBigger = CardRank::isRankOneSmaller(
                     $previousSuitCard->getRank(),
                     $currentSuitCard->getRank(),
                 );
 
                 if ($isRankOneBigger) {
                     $cardsInOrder += 1;
+
+                    if ($cardsInOrder === 5) {
+                        return true;
+                    }
+
                     continue;
                 }
 
                 $cardsInOrder = 0;
-            }
-
-            if ($cardsInOrder >= 5) {
-                return true;
             }
         }
 

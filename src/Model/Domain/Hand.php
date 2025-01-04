@@ -18,6 +18,7 @@ use App\Model\Domain\HandComparison\FlushHandComparison;
 use App\Model\Domain\HandComparison\FourOfAKindHandComparison;
 use App\Model\Domain\HandComparison\FullHouseHandComparison;
 use App\Model\Domain\HandComparison\OnePairHandComparison;
+use App\Model\Domain\HandComparison\StraightFlushHandComparison;
 use App\Model\Domain\HandComparison\StraightHandComparison;
 use App\Model\Domain\HandComparison\ThreeOfAKindHandComparison;
 use App\Model\Domain\HandComparison\TwoPairsHandComparison;
@@ -119,6 +120,10 @@ enum Hand: int
 
         if ($firstHand === Hand::FOUR_OF_A_KIND) {
             return FourOfAKindHandComparison::compare($firstHandCards, $secondHandCards);
+        }
+
+        if ($firstHand === Hand::STRAIGHT_FLUSH) {
+            return StraightFlushHandComparison::compare($firstHandCards, $secondHandCards);
         }
 
         return 0;
